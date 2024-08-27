@@ -1,0 +1,79 @@
+version: '3'
+
+tasks:
+  # DEV SETUP
+  install-tool:
+    label: install-{{.BINARY_NAME}}
+    dir: tools
+    internal: true
+    requires:
+      vars: [ BINARY_NAME, TOOL_PKG ]
+    cmd: go build -o ../.tools/{{.BINARY_NAME}} {{.TOOL_PKG}}
+    sources:
+      - go.mod
+      - go.sum
+      - tools.go
+    generates:
+      - ../.tools/{{.BINARY_NAME}}
+
+  install-gofumpt:
+    summary: Install mvdan.cc/gofumpt.
+    desc: >-
+      Install mvdan.cc/gofumpt to .tools directory for local use. gofumpt is a
+      stricter gofmt.
+    cmd:
+      task: install-tool
+      vars:
+        BINARY_NAME: gofumpt
+        TOOL_PKG: mvdan.cc/gofumpt
+
+  install-gci:
+    summary: Install github.com/daixiang0/gci.
+    desc: >-
+      Install github.com/daixiang0/gci to .tools directory for local use. gci is
+      a tool that controls Go pkg import order and makes it deterministic.
+    cmd:
+      task: install-tool
+      vars:
+        BINARY_NAME: gci
+        TOOL_PKG: github.com/daixiang0/gci
+
+  install-golangci-lint:
+    summary: Install github.com/golangci/golangci-lint/cmd/golangci-lint.
+    desc: >-
+      Install github.com/golangci/golangci-lint/cmd/golangci-lint to .tools
+      directory for local use. golangci-lint is a fast linters runner for Go.
+    cmd:
+      task: install-tool
+      vars:
+        BINARY_NAME: golangci-lint
+        TOOL_PKG: github.com/golangci/golangci-lint/cmd/golangci-lint
+
+  install-tools:
+    summary: Install developer tools.
+    deps: [ install-gofumpt, install-gci, install-golangci-lint ]
+    desc: Install all developer CLI tools to .tools directory for local use.
+
+  imports:
+    summary: Format imports with gci.
+    desc: >-
+      Format package imports in all Go files with gci.
+    deps: [ install-gci ]
+    cmd: .tools/gci write ./ --section standard --section default --section "Prefix(github.com/netskope,github.com/netSkope)" --skip-generated --skip-vendor
+
+  fmt:
+    summary: Formats Go files including import statements.
+    desc: >-
+      Formats Go source files with gci for import statements and gofumpt.
+    deps: [ install-gofumpt, imports ]
+    cmd: .tools/gofumpt -l -w -extra .
+
+  lint:
+    summary: Lint Go source files with golangci-lint and report all issues.
+    desc: >-
+      Lints Go source files with golangci-lint and reports all issues without
+      any filtering. It uses the configuration present in .golangci-prod.toml
+      for running the linter.
+    deps: [ install-golangci-lint ]
+    cmd: .tools/golangci-lint --config=".golangci-prod.toml" --max-same-issues=0 --max-issues-per-linter=0 run
+
