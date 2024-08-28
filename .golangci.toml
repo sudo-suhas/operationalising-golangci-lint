@@ -72,7 +72,6 @@
     # errorlint is a linter for that can be used to find code that will cause
     # problems with the error wrapping scheme introduced in Go 1.13.
     "errorlint",
-    "errorlint",
 
     # https://github.com/daixiang0/gci
     # Gci controls Go package import order and makes it always deterministic.
@@ -317,10 +316,6 @@
         name = "deep-exit"
 
       [[linters-settings.revive.rules]]
-        # Suggests to rename or remove unused function parameters.
-        name = "unused-parameter"
-
-      [[linters-settings.revive.rules]]
         # Checks common struct tags like json,xml,yaml.
         name = "struct-tag"
 
@@ -356,10 +351,6 @@
       [[linters-settings.revive.rules]]
         # Warns on bare returns.
         name = "bare-return"
-
-      [[linters-settings.revive.rules]]
-        # Suggests to rename or remove unused method receivers.
-        name = "unused-receiver"
 
       [[linters-settings.revive.rules]]
         # Spots if-then-else statements that can be refactored to simplify code

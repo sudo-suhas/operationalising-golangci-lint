@@ -55,10 +55,6 @@
     # the use of staticcheck as a library inside golangci-lint.
     "staticcheck",
 
-    # https://github.com/dominikh/go-tools/tree/master/unused
-    # Checks Go code for unused constants, variables, functions and types.
-    "unused", # PROD only
-
     # https://github.com/timakin/bodyclose
     # checks whether HTTP response body is closed successfully.
     "bodyclose",
@@ -487,10 +483,6 @@
         name = "deep-exit"
 
       [[linters-settings.revive.rules]]
-        # Suggests to rename or remove unused function parameters.
-        name = "unused-parameter"
-
-      [[linters-settings.revive.rules]]
         # Checks common struct tags like json,xml,yaml.
         name = "struct-tag"
 
@@ -526,10 +518,6 @@
       [[linters-settings.revive.rules]]
         # Warns on bare returns.
         name = "bare-return"
-
-      [[linters-settings.revive.rules]]
-        # Suggests to rename or remove unused method receivers.
-        name = "unused-receiver"
 
       [[linters-settings.revive.rules]]
         # Spots if-then-else statements that can be refactored to simplify code

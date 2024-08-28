@@ -49,9 +49,20 @@ tasks:
         BINARY_NAME: golangci-lint
         TOOL_PKG: github.com/golangci/golangci-lint/cmd/golangci-lint
 
+  install-present:
+    summary: Install golang.org/x/tools/cmd/present.
+    desc: >-
+      Install golang.org/x/tools/cmd/present to .tools directory for local
+      use. present displays slide presentations and articles..
+    cmd:
+      task: install-tool
+      vars:
+        BINARY_NAME: present
+        TOOL_PKG: golang.org/x/tools/cmd/present
+
   install-tools:
     summary: Install developer tools.
-    deps: [ install-gofumpt, install-gci, install-golangci-lint ]
+    deps: [ install-gofumpt, install-gci, install-golangci-lint, install-present ]
     desc: Install all developer CLI tools to .tools directory for local use.
 
   imports:
@@ -76,4 +87,15 @@ tasks:
       for running the linter.
     deps: [ install-golangci-lint ]
     cmd: .tools/golangci-lint --config=".golangci-prod.toml" --max-same-issues=0 --max-issues-per-linter=0 run
+
+  lint-snippets:
+    summary: Lint example snippets
+    deps: [ install-golangci-lint ]
+    cmd: .tools/golangci-lint --config=".golangci-prod.toml" --max-same-issues=0 --max-issues-per-linter=0 run _snippets
+
+  present:
+    summary: Run the present tool
+    desc: Runs the present tool with presenter notes enabled
+    deps: [ install-present ]
+    cmd: .tools/present -notes -use_playground
 
