@@ -69,13 +69,13 @@ func (c Customer) String() string {
 
 ## Example #1
 
-.code _snippets/errorsas.go /START BROKEN/,/END BROKEN/
+.code demo-code/snippets/errorsas.go /START BROKEN/,/END BROKEN/
 
 ## Example #1
 
 Issue can be fixed by passing a pointer to `*MyError`, a type implementing error.
 
-.code _snippets/errorsas.go /START FIXED/,/END FIXED/
+.code demo-code/snippets/errorsas.go /START FIXED/,/END FIXED/
 
 `go vet` can flag the issue in this case. By default, `go test` runs a high-confidence subset of
 `go vet` checks - `atomic`, `bool`, `buildtags`, `directive`, `errorsas`, `ifaceassert`, `nilfunc`,
@@ -102,13 +102,13 @@ type that implements error, or to any interface type
 
 : Now we will look at some examples and let's try to spot where the issue is.
 
-.code rowserrv1/main.go /START FETCH/,/END FETCH/
+.code demo-code/rowserrv1/main.go /START FETCH/,/END FETCH/
 
 : TODO: Describe IMPACT
 
 ## Example #2
 
-.play rowserrv1/main.go /START DEMO/,/END DEMO/
+.play demo-code/rowserrv1/main.go /START DEMO/,/END DEMO/
 
 ## Example #2
 
@@ -124,13 +124,13 @@ rowserrv1/main.go:82:30: rows.Err must be checked (rowserrcheck)
 
 Issue can be fixed with a `rows.Err()` check:
 
-.play rowserrv2/main.go /START/,/END/
+.play demo-code/rowserrv2/main.go /START/,/END/
 
 ## Example #3
 
 ## Example #3
 
-.play urlqueryv1/main.go /START/,/END/
+.play demo-code/urlqueryv1/main.go /START/,/END/
 
 ## Example #3
 
@@ -139,7 +139,7 @@ One of the _many_ detections in [staticcheck][staticcheck-sa4027] can flag this:
 [staticcheck-sa4027]: https://staticcheck.dev/docs/checks/#SA4027
 
 ```
-_snippets/tbd.go:15:2: SA4027: (*net/url.URL).Query returns a copy, modifying it doesn't change
+snippets/tbd.go:15:2: SA4027: (*net/url.URL).Query returns a copy, modifying it doesn't change
 the URL (staticcheck)
         u.Query().Set("search", params.Search)
         ^
@@ -147,13 +147,13 @@ the URL (staticcheck)
 
 Small changes are needed to fix the issue:
 
-.play urlqueryv2/main.go /START/,/END/
+.play demo-code/urlqueryv2/main.go /START/,/END/
 
 ## Example #4
 
 ## Example #4
 
-.code _snippets/bodyclose.go /START BROKEN/,/END BROKEN/
+.code demo-code/snippets/bodyclose.go /START BROKEN/,/END BROKEN/
 
 : TODO: IMPACT
 
@@ -164,14 +164,14 @@ The [`bodyclose`][bodyclose] linter can detect such issues
 [bodyclose]: https://github.com/timakin/bodyclose
 
 ```
-_snippets/bodyclose.go:16:20: response body must be closed (bodyclose)
+snippets/bodyclose.go:16:20: response body must be closed (bodyclose)
         resp, err := hc.Do(req)
                           ^
 ```
 
 We can fix the issue by draining and closing the response body:
 
-.code _snippets/bodyclose.go /START FIXED/,/END FIXED/
+.code demo-code/snippets/bodyclose.go /START FIXED/,/END FIXED/
 
 But there is a bug in `bodyclose` linter that flags slight variations of this as an issue.
 See [bodyclose#51][bodyclose-issue-51].

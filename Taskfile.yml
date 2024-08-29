@@ -88,11 +88,6 @@ tasks:
     deps: [ install-golangci-lint ]
     cmd: .tools/golangci-lint --config=".golangci-prod.toml" --max-same-issues=0 --max-issues-per-linter=0 run
 
-  lint-snippets:
-    summary: Lint example snippets
-    deps: [ install-golangci-lint ]
-    cmd: .tools/golangci-lint --config=".golangci-prod.toml" --max-same-issues=0 --max-issues-per-linter=0 run _snippets
-
   present:
     summary: Run the present tool
     desc: Runs the present tool with presenter notes enabled
