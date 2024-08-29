@@ -393,7 +393,7 @@ In my experience, having these 2 variants works well:
 
 The difference is that the prod version includes some more intensive checks that may take longer to
 run, but are important for ensuring code quality and security. Some examples of heavy linters that
-we would want to enable for
+we would want to enable only in
 CI: [unused][unused], [gocognit][gocognit], [gocritic][gocritic], [gosec][gosec].
 
 [golangci-lint-linters-v1-57-1-sheet]: https://docs.google.com/spreadsheets/d/1AOin8xMeChW6XL2fufvyjeXBAclqSZ7P7YCi9SMgYEc/edit?usp=sharing
@@ -499,5 +499,3 @@ module files. Taskfile example: [operationalising-golangci-lint@master/Taskfile.
 [taskfile]: https://github.com/sudo-suhas/operationalising-golangci-lint/blob/master/Taskfile.yml
 
 ## Questions?
-
-[moq]: https://github.com/matryer/moq
