@@ -30,7 +30,7 @@ func demo() error {
 	p.SetQueryParams(u)
 
 	fmt.Println("URL:", u)
-	// [Expected] URL: http://my-search-engine.com?limit=5&offset=10&search=linters
+	// [Expected] URL: http://my-search-engine.com?limit=5&offset=10&search=linters // HL
 	return nil
 }
 
