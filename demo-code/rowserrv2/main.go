@@ -95,7 +95,7 @@ func fetchCustomers(ctx context.Context, db *sql.DB) ([]Customer, error) {
 	}
 
 	if err := rows.Err(); err != nil { // HL
-		return nil, fmt.Errorf("fetch customers: rows iteration error: %w", err)
+		return nil, fmt.Errorf("fetch customers: \n\trows iteration error: %w", err)
 	}
 
 	// END OMIT

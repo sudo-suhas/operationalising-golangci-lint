@@ -83,17 +83,7 @@ related to potential bugs or code style.
 
 ## Trial
 
-```
-type Customer struct {
-	ID      int
-	Name    string
-	Country string
-}
-
-func (c Customer) String() string {
-  return fmt.Printf("%s: %s (%s)", c.ID, c.Name, c.Country)
-}
-```
+.play -edit demo-code/printf/main.go /START/,/END/
 
 ## Example #1
 
@@ -138,7 +128,7 @@ type that implements error, or to any interface type
 
 ## Example #2
 
-Linter that can catch this issue - [`rowserrcheck`][rowserrcheck]:
+Linter that can catch this issue - [rowserrcheck][rowserrcheck]:
 
 ```
 rowserrv1/main.go:82:30: rows.Err must be checked (rowserrcheck)
@@ -188,7 +178,7 @@ Small changes are needed to fix the issue:
 
 ## Example #4
 
-The [`bodyclose`][bodyclose] linter can detect such issues
+The [bodyclose][bodyclose] linter can detect such issues
 
 [bodyclose]: https://github.com/timakin/bodyclose
 
@@ -214,7 +204,7 @@ See [bodyclose#51][bodyclose-issue-51].
 1. Why `golangci-lint`?
 2. Why do we need extensive configuration?
 3. Configuration builder sheet walkthrough.
-4. (bonus) Project tooling + IDE integration.
+4. (bonus) Project tooling.
 
 ## golangci-lint
 
