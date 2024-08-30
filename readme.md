@@ -118,12 +118,12 @@ versions of these tools.
 We can leverage Go modules to manage the necessary tooling by doing the following:
 
 - Add a `go.mod` file under `tools` directory:
-  ```
+  ```shell
   go mod init github.com/netskope/spm-{{repo}}/tools
   ```
 - Add a `tools.go` file in the same folder with a build constraint so that it does not get included
   in the build:
-  ```
+  ```go
   //go:build tools
   
   package tools
@@ -139,6 +139,93 @@ Using the `tools/go.mod`, we can build the tool binaries. [Task][task] can be us
 binaries on demand and for managing the commonly used commands. Taskfile is a more modern
 replacement for Makefiles and also has features for re-building the tools based on checksum of
 module files. Taskfile example: [`Taskfile.yml`](Taskfile.yml)
+
+## Developer workflow (with [Task][task])
+
+### Installing task
+
+To install task on macOS with Homebrew, following command needs to be executed:
+
+```shell
+brew install go-task
+```
+
+For other operating systems please refer [task installation page][task-installation].
+
+### Install tools locally
+
+Users can install and cache tools locally for formatting, linter checks etc. by using the below
+command:
+
+```shell
+task install-tools
+```
+
+User can run `task --list` to list all configured commands for the current repository.
+
+### Formatting code
+
+Formatting issues can be reported by [`github.com/mvdan/gofumpt`][gofumpt]
+and [`github.com/daixiang0/gci`][gci]. We just need to run `task fmt` to fix all formatting issues.
+It is also possible to only fix the order of import statements by running `task imports`.
+
+```
+➜ task fmt
+task: Task "install-gci" is up to date
+task: Task "install-gofumpt" is up to date
+task: [imports] .tools/gci write ./ --section standard --section default --section "Prefix(github.com/netskope,github.com/netSkope)" --skip-generated --skip-vendor
+task: [fmt] .tools/gofumpt -l -w -extra .
+```
+
+By integrating the tools to the IDE, we can enable format on save so that files are always formatted
+correctly.
+
+### IDE configuration
+
+#### Goland
+
+##### Set up linter integration for the IDE:
+
+- Install the [Go Linter][go-linter] plugin for GoLand.
+- Under **Tools | Go Linter**, For the "Path to golangci-lint", select the `golangci-lint` binary
+  present in the `.tools` directory inside the project (run `task install-tools` if binary is not
+  present under `.tools`).
+
+Go Linter should automatically pick `.golangci.toml` as the configuration file. It is recommended to
+use this with the IDE plugin to avoid running some of the heavy linters like `unused` during
+development. `task lint` can be used to lint the source files against `.golangci-prod.toml`.
+
+##### Import the file watchers settings:
+
+1. Open IDE preferences with `⌘` + `,`.
+2. Navigate to the 'File Watchers' settings: **Tools | File Watchers**.
+3. Click the 'Import' icon (![import icon][idea-import-icon]) and select the file
+   `.idea/watchers-cfg.xml`. _To show hidden folders in the Finder app on macOS,
+   press `⌘` + `⇧` + `.`._
+
+These file watchers will run `gci` and `gofumpt` for updating import lines and formatting the code
+idiomatically on saving the file.
+
+##### To avoid conflicts with some inbuilt formatting features, do the following:
+
+- Under **Code Style | Go**:
+- Select the "Imports" tab and set "Sorting type" to "None".
+- Under the "Other" tab:
+- Deselect "On Reformat Code action"
+- Select "Add a leading space to comments". under "Except for comments starting with:" add `nolint`
+  and `go:`.
+- Under **Tools | Actions on Save**, deselect "Reformat Code".
+
+### False Positives
+
+False positives are inevitable but `golangci-lint` provides flexible mechanisms for working around
+false positives. We can either use `//nolint` directives to ignore a specific error or we can update
+the `.golangci-lint*.toml` and add an `exclude-rule`.
+See https://golangci-lint.run/usage/false-positives/ for more details.
+
+When adding or updating `exclude-rules`, remember to update both `.golangci.toml` and
+`.golangci-prod.toml`.
+
 
 [google-app-engine]: https://cloud.google.com/appengine
 
@@ -171,3 +258,11 @@ module files. Taskfile example: [`Taskfile.yml`](Taskfile.yml)
 [task]: https://taskfile.dev/
 
 [taskfile]: https://github.com/sudo-suhas/operationalising-golangci-lint/blob/master/Taskfile.yml
+
+[task-installation]: https://taskfile.dev/installation/
+
+[gci]: https://github.com/daixiang0/gci
+
+[go-linter]: https://plugins.jetbrains.com/plugin/12496-go-linter
+
+[idea-import-icon]: https://resources.jetbrains.com/help/img/idea/2020.3/icons.toolbarDecorator.import_dark.svg
