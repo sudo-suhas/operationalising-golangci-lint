@@ -9,6 +9,10 @@ However, due to https://github.com/golang/go/issues/58906, the functionality is 
 As an alternative, the slides have been hosted via [Google App Engine][google-app-engine] and can be
 accessed [here][app-engine-endpoint].
 
+## Video
+
+[![Operationalising golangci-lint](https://img.youtube.com/vi/LGfZMtEQVeI/0.jpg)](https://www.youtube.com/watch?v=LGfZMtEQVeI)
+
 ## Configuration sheet
 
 [golangci-lint-linters-v1.57.1 sheet][golangci-lint-linters-v1-57-1-sheet]
